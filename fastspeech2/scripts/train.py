@@ -17,7 +17,7 @@ def main(train_path: str, preprocessed_path: str,
          pitch_feature: str = 'phoneme', energy_feature: str = 'phoneme',
          pitch_min: float = 0., energy_min: float = 0.,
          lr: float = 2e-4, weight_decay: float = 0.0001, betas=(0.9, 0.98),
-         max_step: int = 200000, group_size: int = 4,
+         max_step: int = 400000, group_size: int = 4,
          save_interval: int = 10000, log_interval: int = 50, grad_clip: float = 0.0, grad_norm: float = 5.0,
          milestones: Tuple[int] = None, gamma: float = 0.2, sr: int = 22050, seed: int = 2021,
          is_reference: bool = False):

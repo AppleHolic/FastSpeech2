@@ -2,7 +2,7 @@
 
 This repository is a refactored version from [ming024's own](https://github.com/ming024/FastSpeech2).
 I focused on refactoring structure for fitting my cases and making parallel pre-processing codes.
-And I wrote installation guide with latest version of MFA(Montreal Force Aligner).
+And I wrote installation guide with the latest version of MFA(Montreal Force Aligner).
 
 ## Installation
 
@@ -32,7 +32,7 @@ pip install -e .
 
 
 - Install MFA 
-  - Visit and follow that method that described in [MFA installation website](https://montreal-forced-aligner.readthedocs.io/en/latest/installation.html).
+  - Visit and follow a guide that described in [MFA installation website](https://montreal-forced-aligner.readthedocs.io/en/latest/installation.html).
   - Additional installation
      - mfa thirdparty download
      - mfa download acoustic english
@@ -90,14 +90,20 @@ from speech_interface.interfaces.hifi_gan import InterfaceHifiGAN
 # chk_path: str, lexicon_path: str, device: str = 'cuda'
 inferencer = Inferencer(chk_path=chk_path, lexicon_path=lexicon_path, device=device)
 
+# initialize hifigan
+interface = InterfaceHifiGAN(model_name='hifi_gan_v1_universal', device='cuda')
+
 # arguments
 # text: str, speaker: int = 0, pitch_control: float = 1., energy_control: float = 1., duration_control: float = 1.
 txt = 'Hello, I am a programmer.'
 mel_spectrogram = inferencer.tts(txt, speaker=0)
 
 # Reconstructs speech by using Hifi-GAN
-interface = InterfaceHifiGAN(model_name='hifi_gan_v1_universal', device='cuda')
-pred_wav = interface.decode(mel_spectrogram).squeeze()
+pred_wav = interface.decode(mel_spectrogram.transpose(1, 2)).squeeze()
+
+# If you test on a jupyter notebook
+from IPython.display import Audio
+Audio(pred_wav.cpu().numpy(), rate=22050)
 ```
 
 - In command line

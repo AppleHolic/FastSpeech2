@@ -2,7 +2,7 @@
 
 This repository is a refactored version from [ming024's own](https://github.com/ming024/FastSpeech2).
 I focused on refactoring structure for fitting my cases and making parallel pre-processing codes.
-And I wrote installation guide with latest version of MFA(Montreal Force Aligner).
+And I wrote installation guide with the latest version of MFA(Montreal Force Aligner).
 
 ## Installation
 
@@ -32,7 +32,7 @@ pip install -e .
 
 
 - Install MFA 
-  - Visit and follow that method that described in [MFA installation website](https://montreal-forced-aligner.readthedocs.io/en/latest/installation.html).
+  - Visit and follow a guide that described in [MFA installation website](https://montreal-forced-aligner.readthedocs.io/en/latest/installation.html).
   - Additional installation
      - mfa thirdparty download
      - mfa download acoustic english

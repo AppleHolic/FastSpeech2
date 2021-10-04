@@ -6,3 +6,4 @@ fire
 Unidecode
 inflect
 scikit-learn
+g2p_en

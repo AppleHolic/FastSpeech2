@@ -90,14 +90,20 @@ from speech_interface.interfaces.hifi_gan import InterfaceHifiGAN
 # chk_path: str, lexicon_path: str, device: str = 'cuda'
 inferencer = Inferencer(chk_path=chk_path, lexicon_path=lexicon_path, device=device)
 
+# initialize hifigan
+interface = InterfaceHifiGAN(model_name='hifi_gan_v1_universal', device='cuda')
+
 # arguments
 # text: str, speaker: int = 0, pitch_control: float = 1., energy_control: float = 1., duration_control: float = 1.
 txt = 'Hello, I am a programmer.'
 mel_spectrogram = inferencer.tts(txt, speaker=0)
 
 # Reconstructs speech by using Hifi-GAN
-interface = InterfaceHifiGAN(model_name='hifi_gan_v1_universal', device='cuda')
-pred_wav = interface.decode(mel_spectrogram).squeeze()
+pred_wav = interface.decode(mel_spectrogram.transpose(1, 2)).squeeze()
+
+# If you test on a jupyter notebook
+from IPython.display import Audio
+Audio(pred_wav.cpu().numpy(), rate=22050)
 ```
 
 - In command line

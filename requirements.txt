@@ -1,0 +1,4 @@
+torch
+speech_interface
+librosa
+tgt

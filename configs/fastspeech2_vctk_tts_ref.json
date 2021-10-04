@@ -1,0 +1,12 @@
+{
+  "train_meta_path": "data/fastspeech2/vctk-pre/train.txt",
+  "preprocessed_path": "data/fastspeech2/vctk-pre",
+  "save_dir": "data/savedirs/fastspeech2_vc",
+  "save_prefix": "fastspeech2_base_ref",
+  "model_name": "fast_speech2_vctk_gst",
+
+  "log_interval": 100,
+  "pitch_min": -1.9287127187455897,
+  "energy_min": -1.375638484954834,
+  "is_reference": true
+}

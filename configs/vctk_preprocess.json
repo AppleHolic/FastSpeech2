@@ -1,0 +1,28 @@
+{
+  "in_dir": "data/fastspeech2/vctk",
+  "out_dir": "data/fastspeech2/vctk-pre",
+  "unaligned_file": "data/fastspeech2/vctk-pre/unaligned.txt",
+
+  "audio_params": {
+    "sample_rate": 22050,
+    "n_fft": 1024,
+    "window_size": 1024,
+    "hop_size": 256,
+    "num_mels": 80,
+    "fmin": 0,
+    "fmax": 8000,
+    "is_center": true
+  },
+
+  "pitch_feature": "phoneme_level",
+  "energy_feature": "phoneme_level",
+  "pitch_norm": true,
+  "energy_norm": true,
+
+  "sample_rate": 22050,
+  "max_wav_value": 32767.0,
+  "validation_rate": 0.05,
+
+  "cleaners": ["english_cleaner"],
+  "meta_dir": "data/VCTK-Corpus/processed/meta"
+}

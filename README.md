@@ -69,18 +69,15 @@ python fastspeech2/scripts/train.py configs/fastspeech2_vctk_tts.json
   - train code : fastspeech2/scripts/train.py
   - config : configs/fastspeech2_vctk_tts.json
 
-2. Fastspeech2 with reference encoder
-
-```
-python fastspeech2/scripts/train.py configs/fastspeech2_vctk_tts_ref.json
-```
+2. Fastspeech2 with reference encoder (To be updated)
 
 
 ## Synthesize 
 
-### Multi-spaker model 
-
 Below guides will be tested after training initial model is ended
+
+
+### Multi-spaker model 
 
 - In a code 
 

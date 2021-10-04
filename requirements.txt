@@ -5,3 +5,4 @@ tgt
 fire
 Unidecode
 inflect
+scikit-learn

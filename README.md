@@ -9,7 +9,9 @@ I focused on refinement of code structure for fitting in my own cases and making
   - Notice ! For installing MFA, you should install the miniconda.
 - In your system
   - To install pyworld, run this command "sudo apt install python3.x-dev". (x is your python version).
-  - To install sndfile, run "sudo apt install libsndfile-dev"
+  - To install sndfile, run "sudo apt-get install libsndfile-dev"
+  - To use MFA, run "sudo apt-get install libopenblas-base"
+
 - Install requirements
 ```
 # install pytorch_sound
@@ -28,6 +30,9 @@ pip install -e .
 - Install MFA(Montreal Forced Aligner) 
 1. Ubuntu 18.04 or upper (16.04 is failed to run MFA caused by an issue compiled environment.)
 2. Visit and follow that method that described in [MFA installation website](https://montreal-forced-aligner.readthedocs.io/en/latest/installation.html).
+   - Additional downloads
+     - mfa thirdparty download
+     - mfa download acoustic english
 
 ## Preprocess (VCTK case)
 
@@ -40,7 +45,8 @@ python fastspeech2/scripts/prepare_align.py configs/vctk_prepare_align.json
 2. Run MFA
 
 ```
-
+# Define your the number of threads to run MFA at the last of a command. "-j [The number of threads]"
+mfa align data/fastspeech2/vctk lexicons/librispeech-lexicon.txt english data/fastspeech2/vctk-pre -j 24
 ```
 
 3. Feature preprocessing

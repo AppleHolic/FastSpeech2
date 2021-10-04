@@ -11,12 +11,15 @@ from joblib import Parallel, delayed, cpu_count
 from ..text import _clean_text
 
 
-def work(input_wav_path, text, out_dir, cleaners, sampling_rate, max_wav_value):
+def work(input_wav_path, txt_file, out_dir, cleaners, sampling_rate, max_wav_value):
     # get base name
     base_name = os.path.basename(input_wav_path).split('.')[0]
-    speaker = input_wav_path.split('/')[-3]
+    speaker = input_wav_path.split('/')[-2]
 
     # clean text
+    with open(txt_file, 'r') as r:
+        text = r.read().strip()
+
     text = _clean_text(text, cleaners)
     if re.match(r'[\w\.\w]+', text):
         text = '. '.join(text.split('.'))
@@ -74,13 +77,13 @@ def prepare_align(in_dir: str, out_dir: str, train_speakers: str,
     for files in info.values():
         if len(files) == 1:
             continue
-        wav, txt = files['wav_file'], files['txt_file']
+        wav, txt_file = files['wav_file'], files['txt_file']
         input_wav_list.append(wav)
-        input_txt_list.append(txt)
+        input_txt_list.append(txt_file)
 
     # do parallel
     Parallel(n_jobs=cpu_count() - 1)(
         delayed(work)
-        (wav_path, text, out_dir, cleaners, sample_rate, max_wav_value)
-        for wav_path, text in tqdm(zip(input_wav_list, input_txt_list), desc='do parallel')
+        (wav_path, txt_file, out_dir, cleaners, sample_rate, max_wav_value)
+        for wav_path, txt_file in tqdm(zip(input_wav_list, input_txt_list), desc='do parallel')
     )

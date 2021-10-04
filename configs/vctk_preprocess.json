@@ -1,7 +1,6 @@
 {
   "in_dir": "data/fastspeech2/vctk",
   "out_dir": "data/fastspeech2/vctk-pre",
-  "unaligned_file": "data/fastspeech2/vctk-pre/unaligned.txt",
 
   "audio_params": {
     "sample_rate": 22050,
@@ -23,6 +22,5 @@
   "max_wav_value": 32767.0,
   "validation_rate": 0.05,
 
-  "cleaners": ["english_cleaner"],
-  "meta_dir": "data/VCTK-Corpus/processed/meta"
+  "cleaners": ["english_cleaner"]
 }

@@ -9,14 +9,14 @@ from fastspeech2.trainers.base_trainer import BaseTrainer
 from fastspeech2.dataset import Dataset
 
 
-def main(train_meta_path: str, preprocessed_path: str,
+def main(train_path: str, preprocessed_path: str,
          save_dir: str, save_prefix: str,
          model_name: str, pretrained_path: str = '', num_workers: int = 16,
-         batch_size: int = 16, group_size: int = 4,
+         batch_size: int = 16,
          pitch_feature: str = 'phoneme', energy_feature: str = 'phoneme',
          pitch_min: float = 0., energy_min: float = 0.,
          lr: float = 2e-4, weight_decay: float = 0.0001, betas=(0.9, 0.98),
-         max_step: int = 800000,
+         max_step: int = 200000, group_size: int = 4,
          save_interval: int = 10000, log_interval: int = 50, grad_clip: float = 0.0, grad_norm: float = 5.0,
          milestones: Tuple[int] = None, gamma: float = 0.2, sr: int = 22050, seed: int = 2021,
          is_reference: bool = False):
@@ -34,7 +34,7 @@ def main(train_meta_path: str, preprocessed_path: str,
     else:
         scheduler = None
 
-    dataset = Dataset(train_meta_path, preprocessed_path, pitch_min=pitch_min, energy_min=energy_min,
+    dataset = Dataset(train_path, preprocessed_path, pitch_min=pitch_min, energy_min=energy_min,
                       text_cleaners=['english_cleaners'],
                       batch_size=batch_size, sort=True, drop_last=True, is_reference=is_reference)
     train_loader = DataLoader(

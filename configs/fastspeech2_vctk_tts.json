@@ -1,5 +1,5 @@
 {
-  "train_meta_path": "data/fastspeech2/vctk-pre/train.txt",
+  "train_path": "train.txt",
   "preprocessed_path": "data/fastspeech2/vctk-pre",
   "save_dir": "data/savedirs/fastspeech2_base",
   "save_prefix": "fastspeech2_base",

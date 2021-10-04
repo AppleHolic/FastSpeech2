@@ -6,6 +6,7 @@ import numpy as np
 import pyworld as pw
 import tgt
 import torch
+import glob
 from multiprocessing import cpu_count
 from typing import Any, Dict
 from joblib import Parallel, delayed
@@ -191,18 +192,20 @@ class Preprocessor:
     def __init__(self, in_dir: str, out_dir: str, validation_rate: float, audio_params: Dict[str, Any],
                  pitch_feature: str = 'phoneme_level', energy_feature: str = 'phoneme_level',
                  pitch_norm: bool = True, energy_norm: bool = True, sample_rate: int = 22050,
-                 unaligned_file: str = ''):
+                 ):
         self.in_dir = in_dir
         self.out_dir = out_dir
         self.validation_rate = validation_rate
         self.sample_rate = sample_rate
         self.sample_rate = audio_params['sample_rate']
         self.hop_size = audio_params['hop_size']
-        if unaligned_file:
-            with open(unaligned_file, 'r') as r:
-                self.unaligned_list = [l.strip().split()[0] for l in r.readlines()]
-        else:
-            self.unaligned_list = []
+
+        # check unaligned
+        wavs = glob.glob(f'{in_dir}/**/*.wav', recursive=True)
+        grids = glob.glob(f'{out_dir}/**/*.TextGrid', recursive=True)
+        wavs = [os.path.basename(f).split('.')[0] for f in wavs]
+        grids = [os.path.basename(f).split('.')[0] for f in grids]
+        self.unaligned_list = list(set(wavs).difference(set(grids)))
 
         assert pitch_feature in [
             'phoneme_level',

@@ -167,3 +167,54 @@ def pad(input_ele, mel_max_length=None):
         out_list.append(one_batch_padded)
     out_padded = torch.stack(out_list)
     return out_padded
+
+
+def to_device(data, device):
+    if len(data) == 12:
+        (
+            ids,
+            raw_texts,
+            speakers,
+            texts,
+            src_lens,
+            max_src_len,
+            mels,
+            mel_lens,
+            max_mel_len,
+            pitches,
+            energies,
+            durations,
+        ) = data
+
+        speakers = speakers.long().to(device)
+        texts = texts.long().to(device)
+        src_lens = src_lens.to(device)
+        mels = mels.float().to(device)
+        mel_lens = mel_lens.to(device)
+        pitches = pitches.float().to(device)
+        energies = energies.to(device)
+        durations = durations.long().to(device)
+
+        return (
+            ids,
+            raw_texts,
+            speakers,
+            texts,
+            src_lens,
+            max_src_len,
+            mels,
+            mel_lens,
+            max_mel_len,
+            pitches,
+            energies,
+            durations,
+        )
+
+    if len(data) == 6:
+        (ids, raw_texts, speakers, texts, src_lens, max_src_len) = data
+
+        speakers = speakers.long().to(device)
+        texts = texts.long().to(device)
+        src_lens = src_lens.to(device)
+
+        return (ids, raw_texts, speakers, texts, src_lens, max_src_len)

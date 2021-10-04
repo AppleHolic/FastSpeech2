@@ -1,12 +1,14 @@
 # FastSpeech2 
 
 This repository is a refactored version from [ming024's own](https://github.com/ming024/FastSpeech2).
-I focused on refinement of code structure for fitting in my own cases and making parallel pre-processing codes.
+I focused on refactoring structure for fitting in my cases and making parallel pre-processing codes.
+And I wrote installation guide on latest version of MFA(Montreal Force Aligner).
 
 ## Installation
 
 - Tested on python 3.8, Ubuntu 20.04
   - Notice ! For installing MFA, you should install the miniconda.
+  - If you run on MFA under 16.04 or ealier version of Ubuntu, you will face a compile error.
 - In your system
   - To install pyworld, run this command "sudo apt install python3.x-dev". (x is your python version).
   - To install sndfile, run "sudo apt-get install libsndfile-dev"
@@ -27,22 +29,22 @@ pip install -e .
 2. LibriTTS
    - To be updated
 
-- Install MFA(Montreal Forced Aligner) 
+- Install MFA 
 1. Ubuntu 18.04 or upper (16.04 is failed to run MFA caused by an issue compiled environment.)
 2. Visit and follow that method that described in [MFA installation website](https://montreal-forced-aligner.readthedocs.io/en/latest/installation.html).
-   - Additional downloads
+   - Additional installation
      - mfa thirdparty download
      - mfa download acoustic english
 
 ## Preprocess (VCTK case)
 
-1. Prepare phoneme alignments
+1. Prepare MFA
 
 ```
 python fastspeech2/scripts/prepare_align.py configs/vctk_prepare_align.json
 ```
 
-2. Run MFA
+2. Run MFA for making alignments
 
 ```
 # Define your the number of threads to run MFA at the last of a command. "-j [The number of threads]"
@@ -76,9 +78,11 @@ python fastspeech2/scripts/train.py configs/fastspeech2_vctk_tts_ref.json
 
 ## Synthesize 
 
-### Multi-spaker model
+### Multi-spaker model 
 
-- In a code
+Below guides will be tested after training initial model is ended
+
+- In a code 
 
 ```python
 from fastspeech2.inference import Inferencer

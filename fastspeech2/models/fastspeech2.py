@@ -153,7 +153,7 @@ def fast_speech2_vctk():
             'dropout': 0.5
         },
         'mel_size': 80,
-        'n_speakers': 108,
+        'n_speakers': 102,
         'is_gst': False
     }
 
@@ -163,4 +163,3 @@ def fast_speech2_vctk_gst():
     d = fast_speech2_vctk()
     d['is_gst'] = True
     return d
-

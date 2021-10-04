@@ -1,11 +1,12 @@
-from collections import defaultdict
-
 import torch
 import torch.nn as nn
 from typing import Tuple, Dict
+from collections import defaultdict
+
 from pytorch_sound.trainer import LogType, Trainer
 from pytorch_sound.utils.tensor import to_device
-
+from pytorch_sound.utils.calculate import db2log
+from pytorch_sound.settings import MIN_DB
 from fastspeech2.utils.tools import to_device, log
 from fastspeech2.models.loss import FastSpeech2Loss
 from speech_interface.interfaces.hifi_gan import InterfaceHifiGAN
@@ -33,6 +34,7 @@ class BaseTrainer(Trainer):
         self.loss_func = FastSpeech2Loss(pitch_feature, energy_feature)
 
         self.is_reference = is_reference
+        self.mel_log_min = db2log(MIN_DB)
 
     def forward(self, *inputs, is_logging: bool = False) -> Tuple[torch.Tensor, Dict]:
         # Forward
@@ -49,6 +51,14 @@ class BaseTrainer(Trainer):
             raugh_mel, post_mel = output[:2]
             raugh_mel, post_mel = raugh_mel[:1].transpose(1, 2), post_mel[:1].transpose(1, 2)
             target_mel = inputs[6][:1].transpose(1, 2)
+
+            # slice padded part, minimum value of mel is zero.
+            if any([self.mel_log_min + 1 > numb for numb in target_mel[0, 0].cpu().numpy().tolist()]):
+                first_pad_idx = int(target_mel[0, 0].argmin().cpu().numpy())
+                raugh_mel = raugh_mel[..., :first_pad_idx]
+                post_mel = post_mel[..., :first_pad_idx]
+                target_mel = target_mel[..., :first_pad_idx]
+
             # synthesis
             pred_wav = self.interface.decode(post_mel).squeeze()
             rec_wav = self.interface.decode(target_mel).squeeze()
@@ -118,48 +128,26 @@ class BaseTrainer(Trainer):
             except OverflowError:
                 pass
 
-    def validate(self, step: int):
+    def run(self):
+        try:
+            # training loop
+            for i in range(self.step + 1, self.max_step + 1):
 
-        loss = 0.
-        stat = defaultdict(float)
+                # update step
+                self.step = i
 
-        for i in range(self.valid_max_step):
-            # forward model
-            with torch.no_grad():
-                batch_loss, meta = self.forward(*next(self.valid_dataset), is_logging=True)
-                loss += batch_loss
+                # logging
+                if i % self.save_interval == 1:
+                    log('------------- TRAIN step : %d -------------' % i)
 
-            for key, (value, log_type) in meta.items():
-                if log_type == LogType.SCALAR:
-                    stat[key] += value
+                # do training step
+                self.model.train()
+                self.train(i)
 
-            if i % self.log_interval == 0 or i == self.valid_max_step - 1:
-                self.console_log('valid', meta, i + 1)
+                # save model
+                if i % self.save_interval == 0:
+                    # save model checkpoint file
+                    self.save(i)
 
-        # averaging stat
-        loss /= self.valid_max_step
-        for key in stat.keys():
-            if key == 'loss':
-                continue
-            stat[key] = stat[key] / self.valid_max_step
-        stat['loss'] = loss
-
-        # update best valid loss
-        if loss < self.best_valid_loss:
-            self.best_valid_loss = loss
-
-        # console logging of total stat
-        msg = 'step {} / total stat'.format(step)
-        for key, value in sorted(stat.items()):
-            msg += '\t{}: {:.6f}'.format(key, value)
-        log(msg)
-
-        # tensor board logging of scalar stat
-        for key, value in stat.items():
-            self.writer.add_scalar('valid/{}'.format(key), value, global_step=step)
-
-        # final tensor board log
-        # nonscalar
-        self.tensorboard_log('valid', {
-            key: val for key, val in meta.items() if val[1] != LogType.SCALAR
-        }, step)
+        except KeyboardInterrupt:
+            log('Train is canceled !!')

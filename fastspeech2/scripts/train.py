@@ -2,6 +2,7 @@ import fire
 import torch
 import torch.nn as nn
 import json
+import torch.multiprocessing
 from typing import Tuple
 from pytorch_sound.models import build_model
 from torch.utils.data import DataLoader
@@ -65,4 +66,5 @@ def run_config(config_path: str):
 
 if __name__ == '__main__':
     torch.backends.cudnn.benchmark = True
+    torch.multiprocessing.set_sharing_strategy('file_system')
     fire.Fire(run_config)

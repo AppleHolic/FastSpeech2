@@ -45,25 +45,36 @@ def work(input_wav_path, text, out_dir, cleaners, sampling_rate, max_wav_value):
         f1.write(text)
 
 
-def prepare_align(in_dir: str, out_dir: str, sample_rate: int, max_wav_value: int, cleaners: List):
+def prepare_align(in_dir: str, out_dir: str, train_speakers: str,
+                  sample_rate: int, max_wav_value: int, cleaners: List):
+    # load train speakers
+    with open(train_speakers, 'r') as r:
+        train_spks = [l.strip() for l in r.readlines()]
+
     # List-up all wav files
-    wav_files = glob.glob(f'{in_dir}/wav*/Train/*/*.wav')
+    wav_files = glob.glob(f'{in_dir}/wav48/*/*.wav')
 
     # List-up text files
     txt_files = glob.glob(f'{in_dir}/**/*.txt', recursive=True)
 
-    # Match wav and text files
+    # Match wav and text files, filter speakers
     info = {os.path.basename(file_path).split('.')[0]: {'wav_file': file_path} for file_path in wav_files}
     for text_file_path in txt_files:
         key = os.path.basename(text_file_path).split('.')[0]
+        # filter train spks
+        if key.split('_')[0] not in train_spks:
+            continue
         if key in info:
             info[key]['txt_file'] = text_file_path
+
 
     # re-write
     input_wav_list = []
     input_txt_list = []
     for files in info.values():
-        wav, txt = files
+        if len(files) == 1:
+            continue
+        wav, txt = files['wav_file'], files['txt_file']
         input_wav_list.append(wav)
         input_txt_list.append(txt)
 

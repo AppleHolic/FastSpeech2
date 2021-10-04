@@ -5,6 +5,11 @@ I focused on refinement of code structure for fitting in my own cases and making
 
 ## Installation
 
+- Tested on python 3.8, Ubuntu 20.04
+  - Notice ! For installing MFA, you should install the miniconda.
+- In your system
+  - To install pyworld, run this command "sudo apt install python3.x-dev". (x is your python version).
+  - To install sndfile, run "sudo apt install libsndfile-dev"
 - Install requirements
 ```
 # install pytorch_sound
@@ -32,7 +37,13 @@ pip install -e .
 python fastspeech2/scripts/prepare_align.py configs/vctk_prepare_align.json
 ```
 
-2. Feature preprocessing
+2. Run MFA
+
+```
+
+```
+
+3. Feature preprocessing
 
 ```
 python fastspeech2/scripts/preprocess.py configs/vctk_preprocess.json

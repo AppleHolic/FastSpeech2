@@ -3,5 +3,6 @@
   "sample_rate": 22050,
   "max_wav_value": 32767.0,
   "cleaners": ["english_cleaners"],
-  "in_dir": "data/VCTK-Corpus/"
+  "in_dir": "data/VCTK-Corpus",
+  "train_speakers": "configs/vctk_train_speakers.txt"
 }

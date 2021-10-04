@@ -2,3 +2,6 @@ torch
 speech_interface
 librosa
 tgt
+fire
+Unidecode
+inflect

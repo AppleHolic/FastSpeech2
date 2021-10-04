@@ -1,20 +1,21 @@
 # FastSpeech2 
 
 This repository is a refactored version from [ming024's own](https://github.com/ming024/FastSpeech2).
-I focused on refactoring structure for fitting in my cases and making parallel pre-processing codes.
-And I wrote installation guide on latest version of MFA(Montreal Force Aligner).
+I focused on refactoring structure for fitting my cases and making parallel pre-processing codes.
+And I wrote installation guide with latest version of MFA(Montreal Force Aligner).
 
 ## Installation
 
 - Tested on python 3.8, Ubuntu 20.04
   - Notice ! For installing MFA, you should install the miniconda.
-  - If you run on MFA under 16.04 or ealier version of Ubuntu, you will face a compile error.
+  - If you run MFA under 16.04 or ealier version of Ubuntu, you will face a compile error.
 - In your system
-  - To install pyworld, run this command "sudo apt install python3.x-dev". (x is your python version).
+  - To install pyworld, run "sudo apt-get install python3.x-dev". (x is your python version).
   - To install sndfile, run "sudo apt-get install libsndfile-dev"
   - To use MFA, run "sudo apt-get install libopenblas-base"
 
 - Install requirements
+
 ```
 # install pytorch_sound
 pip install git+https://github.com/appleholic/pytorch_sound
@@ -25,14 +26,14 @@ pip install -e .
 1. VCTK
    - Visit and download dataset from [https://datashare.is.ed.ac.uk/handle/10283/2651](https://datashare.is.ed.ac.uk/handle/10283/2651)
    - Move to "./data" and extract compressed file.
-     - If you wanna save in another directory, you must change the path of configuration files.
+     - If you wanna save dataset to another directory, you must change the path of configuration files.
 2. LibriTTS
    - To be updated
 
+
 - Install MFA 
-1. Ubuntu 18.04 or upper (16.04 is failed to run MFA caused by an issue compiled environment.)
-2. Visit and follow that method that described in [MFA installation website](https://montreal-forced-aligner.readthedocs.io/en/latest/installation.html).
-   - Additional installation
+  - Visit and follow that method that described in [MFA installation website](https://montreal-forced-aligner.readthedocs.io/en/latest/installation.html).
+  - Additional installation
      - mfa thirdparty download
      - mfa download acoustic english
 
@@ -74,7 +75,7 @@ python fastspeech2/scripts/train.py configs/fastspeech2_vctk_tts.json
 
 ## Synthesize 
 
-Below guides will be tested after training initial model is ended
+Below guides will be tested after training initial model
 
 
 ### Multi-spaker model 
@@ -96,7 +97,7 @@ mel_spectrogram = inferencer.tts(txt, speaker=0)
 
 # Reconstructs speech by using Hifi-GAN
 interface = InterfaceHifiGAN(model_name='hifi_gan_v1_universal', device='cuda')
-pred_wav = interface.decode(post_mel).squeeze()
+pred_wav = interface.decode(mel_spectrogram).squeeze()
 ```
 
 - In command line

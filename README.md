@@ -75,9 +75,6 @@ python fastspeech2/scripts/train.py configs/fastspeech2_vctk_tts.json
 
 ## Synthesize 
 
-Below guides will be tested after training initial model
-
-
 ### Multi-spaker model 
 
 - In a code 

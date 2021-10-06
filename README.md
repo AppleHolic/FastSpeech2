@@ -37,6 +37,9 @@ pip install -e .
      - mfa thirdparty download
      - mfa download acoustic english
 
+- Pre-trained checkpoint
+  - VCTK, 400k steps : [Google Drive Link](https://drive.google.com/file/d/1uyLVD3gdrBP4XEjeReughHe3RoOoDcd9/view?usp=sharing)
+
 ## Preprocess (VCTK case)
 
 1. Prepare MFA
